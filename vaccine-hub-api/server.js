@@ -3,6 +3,7 @@ const cors = require("cors")
 const morgan = require("morgan")
 const { NotFoundError } = require("./utils/errors")
 const { PORT } = require("./config")
+const authRoutes = require("./routes/auth")
 
 const app = express()
 
@@ -15,8 +16,10 @@ app.use(express.json())
 //log request info
 app.use(morgan("tiny"))
 
+app.use("/auth", authRoutes)
+
 app.use((req, res, next) => {
-    return next(new NotFoundError)
+    return next(new NotFoundError())
 })
 
 app.use((err, req, res, next) => {
